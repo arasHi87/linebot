@@ -30,6 +30,18 @@ foreach ($client->parseEvents() as $event) {
                 case 'text':
                     $msg = $message['text'];
                     switch ($msg) {
+                        case '!test':
+                            $client->replyMessage(array(
+                            'replytoken' => $event['replyToken'],
+                            'messages' => array(
+                                        array(
+                                        'type' => 'text',
+                                        'text' => $text
+                                    )
+                                )
+                            ));
+                            break;
+                            
                         case '/test':
                            $text = 'test successful';
                         break;

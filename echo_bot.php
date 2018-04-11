@@ -28,16 +28,37 @@ foreach ($client->parseEvents() as $event) {
             $message = $event['message'];
             switch ($message['type']) {
                 case 'text':
-                    $client->replyMessage(array(
-                        'replyToken' => $event['replyToken'],
-                        'messages' => array(
-                            array(
-                                'type' => 'text',
-                                'text' => $message['text']
-                            )
-                        )
-                    ));
+                    $msg = $message['text'];
+                    switch ($msg) {
+                        case '/test':
+                           $text = 'test successful';
+                        break;
+                    
+                        case '/coda':
+                            $a = rand(0,100); //引爆數字
+                            $b = true; //開關
+                            $c = $event['replyToken']; //確認群組
+                            $d = 100; //上限
+                            $e = 0; //下限
+                            break;
+
+                        default:
+                            if ($b) {
+                                if ($event['replyToken'] == $c) {
+                                    if ($msg == $a) {
+                                        $text = 'Bang! 就是你了!!';
+                                    } else if ($msg > $a) {
+                                        $d = $msg;
+                                        $text = '更新範圍: ' . $d . '~' . $e;
+                                    } else if ($msg < $a) {
+                                        $e = $msg;
+                                        $text = '更新範圍: ' . $d . '~' . $e;
+                                    }
+                                }
+                            }
+                    }
                     break;
+
                 default:
                     error_log("Unsupporeted message type: " . $message['type']);
                     break;
@@ -47,4 +68,15 @@ foreach ($client->parseEvents() as $event) {
             error_log("Unsupporeted event type: " . $event['type']);
             break;
     }
+    if (isset($text) && $text != '') {
+    $client->replyMessage(array(
+    'replytoken' => $event['replyToken'],
+    'messages' => array(
+            array(
+            'type' => 'text',
+            'text' => $text
+        )
+    )
+));
+}
 };
